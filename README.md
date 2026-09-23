@@ -11,7 +11,7 @@ Every tool we built came from a problem in the tool before it.
 3. The outreach tool needed **email finding and email verification** that did not lie. Existing vendors were either expensive, inaccurate, or both.
 4. So we built [**FixBounce**](https://fixbounce.com), our own email finder and verification service. It is real infrastructure code, with workers, queues, billing, and all the production surface area that comes with that.
 5. FixBounce needed to be **audited properly** before we trusted it with customer data. Every AI we tried had blind spots. One model would catch a SQL injection and miss a concurrency bug. Another would catch the concurrency bug and miss a credential leak. No single AI was enough.
-6. So we built **MegaLens**, a process where multiple AIs debate the same code, a judge panel cross-examines their findings, and a supreme reviewer delivers the final verdict. We used it on FixBounce first. One of the case studies below is the actual FixBounce remediation session where MegaLens caught an SSRF bypass that had already passed its tests.
+6. So we built **MegaLens**, where AI models from different companies review the same code and show where they agree and where they disagree. We used it on FixBounce first. One of the case studies below is the actual FixBounce remediation session where MegaLens caught an SSRF bypass that had already passed its tests.
 
 A few friends who are themselves developers asked for their own access after seeing what it caught. That is when we decided to ship it publicly.
 
@@ -19,13 +19,9 @@ A few friends who are themselves developers asked for their own access after see
 
 ### What it does
 
-You give MegaLens a task, like "audit this repo" or "plan this SaaS launch" or "review this legal draft." Instead of asking one model, it:
+You ask your coding tool for a review, and MegaLens sends that code to AI models from different companies. On Free, MegaLens selects two reviewing models. On Pro, MegaLens selects up to four. A final check reviews their findings. You get one list back, each finding labelled verified, disputed or unverified, and the result names the models that took part.
 
-1. Runs the task through multiple independent AI debaters from different families (Anthropic, OpenAI, Google, and others).
-2. Sends their findings to a panel of judges for a gap-fill cross-examination. Each judge has to find what the others missed.
-3. Sends the result to a Supreme appellate reviewer for the final verdict.
-
-Ten skills run on this chain: full code audit, security audit, code intelligence, research, legal, SEO, WordPress, logo design, SaaS launch, and general.
+It runs inside Claude Code, Codex CLI, Cursor, Gemini CLI and Lovable, for code, security, research and planning reviews.
 
 ### Why multi-brain
 
